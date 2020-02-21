@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-1">
+       {{accounts.name}} History
+    </div> 
+   
+  </div>
+  <div class="row">
+      <div class="col-sm-1"> 
+        Date
+       </div>
+      <div class="col-sm-4">
+        Description
+      </div>
+      <div class="col-sm-2">
+        Amount
+      </div>
+      <div class="col-sm-2">
+        Balance
+      </div>
+      <div class="col-sm-2">
+        Prev Balance
+      </div>
+    </div>
+ 
+
+  {% for transaction in transaction %}
+    <div class="account">
+      <div class="row">
+        <div class="col-sm-1">  
+          {{transaction.date}}
+        </div>
+        <div class="col-sm-4">
+          {{transaction.description}}
+        </div>
+        <div class="col-sm-2">
+          {{transaction.amount}}
+        </div>
+        <div class="col-sm-2">
+          {{transaction.balance}}
+        </div>
+        <div class="col-sm-2">
+          {{transaction.prevbalance}}
+        </div>
+
+     </div>
+  {% endfor %}
+{% endblock %}

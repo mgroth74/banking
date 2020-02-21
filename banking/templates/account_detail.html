@@ -1,18 +1,55 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block content %}
+<div class="row">
+  <div class="col-sm-2">
+     {{account.name}} History
+  </div> 
+ 
+</div>
+<div class="row">
+    <div class="col-sm-2"> 
+      Date
+     </div>
+    <div class="col-sm-4">
+      Description
+    </div>
+    <div class="col-sm-2">
+      Amount
+    </div>
+    <div class="col-sm-2">
+      Balance
+    </div>
+    <div class="col-sm-2">
+      Prev Balance
+    </div>
+  </div>
 
-  <div>
-   
-    <h1>{{ account.name }}</h1>
-    <p>{{account.acct_type}}</p>
-    <p>{{account.dt_opened}}</p>
-    <p>{{account.owner}}</p>
-    <p>{{account.interest_rt}}</p>
-    <br>
-    <br>
-    
-    {% for car in seller.car.all %}
+
+{% for transaction in account.transactions.all %}
+  <div class="account">
+    <div class="row">
+      <div class="col-sm-2">  
+        {{transaction.date | date:'m-d-Y'}}
+
+        
+      </div>
+      <div class="col-sm-4">
+        {{transaction.description}}
+      </div>
+      <div class="col-sm-2">
+        {{ transaction.amount | currency}}
+        
+      </div>
+      <div class="col-sm-2">
+        {{transaction.balance | currency}}
+      </div>
+      <div class="col-sm-2">
+        {{transaction.prevbalance | currency}}
+      </div>
+
+   </div>
     
     {% endfor %}
     <footer>

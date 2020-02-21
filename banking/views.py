@@ -1,11 +1,25 @@
 from django.shortcuts import render, redirect
-from .models import Accounts, Transactions
-from .forms import AccountForm, TransactionForm
+from .models import Accounts, Transactions, Cash_Forecast
+from .forms import AccountForm, TransactionForm, Cash_ForecastForm
 
 
 def account_list(request):
-    account = Accounts.objects.all()
+    account = Accounts.objects.raw(""" SELECT banking_accounts.id, 
+                banking_accounts.name, 
+                banking_transactions.balance, 
+                banking_transactions.id, 
+                banking_accounts.interest_rt 
+        FROM banking_transactions 
+                JOIN banking_accounts on banking_transactions.name_id = banking_accounts.id 
+            WHERE banking_transactions.id in 
+                (SELECT distinct max(banking_transactions.id) 
+                    FROM banking_transactions group by banking_transactions.name_id) """)
+
     return render(request, 'account_list.html', {'account': account})
+
+# def account_list(request):
+#     account = Accounts.objects.all()
+#     return render(request, 'account_list.html', {'account': account})
 
 def account_detail(request, id):
     account = Accounts.objects.get(id = id)
@@ -36,10 +50,15 @@ def account_delete(request, id):
     Accounts.objects.get(id = id).delete()
     return redirect('account_list')
 
+# def account_balance(request, id):
+#     balance = Transactions.objects.filter(name_id=id).values_list('balance').order_by('-id')[0:1]   
+#     return reneder(reequest, 'account_list.html', {'balance': balance})
 
 
-def transaction_list(request):
-    transaction = Transactions.objects.all()
+
+
+def transaction_list(request, id):
+    transaction = Transactions.objects.all().order_by('id')
     return render(request, 'transaction_list.html', {'transaction': transaction})
 
 def transaction_detail(request, id):
@@ -72,13 +91,27 @@ def transaction_delete(request, id):
     return redirect('transaction_list')
 
 
-# def upload_pic(request):
-#     if request.method == 'POST':
-#         form = ImageUploadForm(request.POST, request.FILES)
-#         if form.is_valid:
-#             # transaction = transaction.objects.get(id=id)
-#             transaction.img_url = form.cleaned_data['image']
-#             transaction=form.save()
-#             # return redirect('transaction_detail', id = transaction.id)
-#             return HttpResponse('image upload success')
-#     return HttpResponseForbidden('allowed only via POST')
+def cash_forecast(request):
+    cash_forecast = Cash_Forecast.objects.all().order_by('id')
+    return render(request, 'cash_forecast.html', {'cash_forecast': cash_forecast})
+
+
+def income_create(request):
+    if request.method == 'POST':
+        form = Cash_ForecastForm(request.POST)
+        if form.is_valid:
+            income = form.save()
+            return redirect('cash_forecast')
+    else:
+        form = Cash_ForecastForm()
+        return render(request, 'income_form.html', {'form': form})
+
+def bill_create(request):
+    if request.method == 'POST':
+        form = Cash_ForecastForm(request.POST)
+        if form.is_valid:
+            bill = form.save()
+            return redirect('cash_forecast')
+    else:
+        form = Cash_ForecastForm()
+        return render(request, 'bill_form.html', {'form': form})

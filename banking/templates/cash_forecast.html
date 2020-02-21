@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-sm-5">
+  <h2>{% now "F Y" %} Cashflow</h2>
+  </div> 
+
+{% for account in account %}
+<div class="row justify-content-center">
+  <div class="col-sm-5">
+  <h2>{{account.balance}}</h2>
+</div>
+{% endfor %} 
+
+ 
+</div>
+<div class="row justify-content-center">
+ 
+    <div class="col-sm-2"> 
+      <a href="/cash_forecast/income"><button class="btn btn-success">Add Income</button></a>
+     </div>
+     <div class="col-sm-2"> 
+      <a href="/cash_forecast/bill"><button class="btn btn-danger">Add Bill</button></a>
+     </div>
+  </div>
+
+  {% for cash_forecast in cash_forecast %}
+  <div class="row justify-content-center">  
+    <div class="col-sm-2">
+      {{ cash_forecast.start_dt | date:'m-d-Y'}}
+    </div>
+    <div class="col-sm-2">
+      {{ cash_forecast.cname}}
+    </div>
+    <div class="col-sm-2">
+      {{ cash_forecast.amount | currency}}
+    </div>
+  </div>  
+    {% endfor %} 
+
+{% endblock %}
+

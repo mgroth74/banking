@@ -13,5 +13,7 @@ urlpatterns = [
     path('transactions/new', views.transaction_create, name = 'transaction_create'),
     path('transactions/<int:id>/edit', views.transaction_update, name = 'transaction_edit'),
     path('transactions/<int:id>/delete', views.transaction_delete, name = 'transaction_delete'),
-    
+    path('cash_forecast/', views.cash_forecast, name = 'cash_forecast'),
+    path('cash_forecast/income/', views.income_create, name = 'income_create'),
+    path('cash_forecast/bill/', views.bill_create, name = 'bill_create')
 ]
