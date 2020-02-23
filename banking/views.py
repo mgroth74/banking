@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Accounts, Transactions, Cash_Forecast
-from .forms import AccountForm, TransactionForm, Cash_ForecastForm
+from .forms import AccountForm, TransactionForm, IncomeForm
 
 
 def account_list(request):
@@ -98,20 +98,13 @@ def cash_forecast(request):
 
 def income_create(request):
     if request.method == 'POST':
-        form = Cash_ForecastForm(request.POST)
+        form = IncomeForm(request.POST)
         if form.is_valid:
             income = form.save()
             return redirect('cash_forecast')
     else:
-        form = Cash_ForecastForm()
+        form = IncomeForm()
         return render(request, 'income_form.html', {'form': form})
 
-def bill_create(request):
-    if request.method == 'POST':
-        form = Cash_ForecastForm(request.POST)
-        if form.is_valid:
-            bill = form.save()
-            return redirect('cash_forecast')
-    else:
-        form = Cash_ForecastForm()
-        return render(request, 'bill_form.html', {'form': form})
+
+

@@ -15,5 +15,5 @@ urlpatterns = [
     path('transactions/<int:id>/delete', views.transaction_delete, name = 'transaction_delete'),
     path('cash_forecast/', views.cash_forecast, name = 'cash_forecast'),
     path('cash_forecast/income/', views.income_create, name = 'income_create'),
-    path('cash_forecast/bill/', views.bill_create, name = 'bill_create')
+ 
 ]

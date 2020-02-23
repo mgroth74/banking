@@ -5,7 +5,7 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = Accounts
-        fields = ('name','acct_type', 'dt_opened', 'owner', 'interest_rt',)
+        fields = ('name','acct_type', 'owner', 'interest_rt',)
 
 class TransactionForm(forms.ModelForm):
 
@@ -13,9 +13,11 @@ class TransactionForm(forms.ModelForm):
         model = Transactions
         fields = ('description', 'amount','name',)
 
+        
 
-class Cash_ForecastForm(forms.ModelForm):
+
+class IncomeForm(forms.ModelForm):
 
     class Meta:
         model = Cash_Forecast
-        fields = ('cname', 'amount','howoften', 'start_dt', 'name',)
+        fields = ('Name','Entry_Type','Amount','Occurrence', 'Start_Dt', 'Account',)

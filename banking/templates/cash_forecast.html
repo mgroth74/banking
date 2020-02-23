@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load filters %}
+{% load mathfilters %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -25,20 +26,30 @@
       <a href="/cash_forecast/bill"><button class="btn btn-danger">Add Bill</button></a>
      </div>
   </div>
-
+  
   {% for cash_forecast in cash_forecast %}
+ 
   <div class="row justify-content-center">  
     <div class="col-sm-2">
-      {{ cash_forecast.start_dt | date:'m-d-Y'}}
+      
+      {{ cash_forecast.Start_Dt | date:'m-d-Y'}}
     </div>
     <div class="col-sm-2">
-      {{ cash_forecast.cname}}
+      {{cash_forecast.cname}}
     </div>
     <div class="col-sm-2">
-      {{ cash_forecast.amount | currency}}
+      {% if cash_forecast.Entry_Type == 'B' %}
+          {{cash_forecast.Amount|mul:-1}}
+      {% else %}
+          {{cash_forecast.Amount}}
+
+      {% endif %}
+      
     </div>
+  
   </div>  
-    {% endfor %} 
+ 
+  {% endfor %} 
 
 {% endblock %}
 
