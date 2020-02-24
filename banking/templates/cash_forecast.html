@@ -7,26 +7,22 @@
   <div class="col-sm-5">
   <h2>{% now "F Y" %} Cashflow</h2>
   </div> 
-
-{% for account in account %}
-<div class="row justify-content-center">
-  <div class="col-sm-5">
-  <h2>{{account.balance}}</h2>
-</div>
-{% endfor %} 
-
- 
 </div>
 <div class="row justify-content-center">
  
     <div class="col-sm-2"> 
-      <a href="/cash_forecast/income"><button class="btn btn-success">Add Income</button></a>
+      <a href="/cash_forecast/income"><button class="btn btn-success">Add Item</button></a>
      </div>
-     <div class="col-sm-2"> 
-      <a href="/cash_forecast/bill"><button class="btn btn-danger">Add Bill</button></a>
-     </div>
-  </div>
-  
+</div>
+
+<div class="row justify-content-center">
+    <div>
+      {% for balance in balance %}
+       {{balance.balance | currency}}
+      {% endfor %}
+     </div>  
+</div>
+
   {% for cash_forecast in cash_forecast %}
  
   <div class="row justify-content-center">  
@@ -35,7 +31,7 @@
       {{ cash_forecast.Start_Dt | date:'m-d-Y'}}
     </div>
     <div class="col-sm-2">
-      {{cash_forecast.cname}}
+      {{cash_forecast.Name}}
     </div>
     <div class="col-sm-2">
       {% if cash_forecast.Entry_Type == 'B' %}
@@ -46,10 +42,23 @@
       {% endif %}
       
     </div>
-  
+
   </div>  
- 
   {% endfor %} 
+
+ <div class="row justify-content-center">  
+  <div class="col-sm-4">
+        {% for balance in balance %}
+      Ending Balance  {{balance.balance|add:cash|currency}}
+        {% endfor %}
+  
+ </div>  
+</div>
+
+     
+
+ 
+  
 
 {% endblock %}
 

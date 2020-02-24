@@ -17,6 +17,9 @@ class Transactions(models.Model):
   balance = models.IntegerField(default = '0')
   prevbalance = models.IntegerField(default = '0')
   name = models.ForeignKey(Accounts, on_delete = models.CASCADE, related_name = 'transactions')
+
+  class Meta:
+    ordering = ('-id',)
   
   def __str__(self):
     return self.description
@@ -34,5 +37,5 @@ class Cash_Forecast(models.Model):
   Account = models.ForeignKey(Accounts, on_delete = models.CASCADE, related_name = 'Cashforecast')
 
   def __str__(self):
-    return self.cname
+    return self.Name
 

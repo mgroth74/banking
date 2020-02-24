@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Accounts, Transactions, Cash_Forecast
 from .forms import AccountForm, TransactionForm, IncomeForm
+from django.db.models import Sum
 
 
 def account_list(request):
@@ -58,7 +59,7 @@ def account_delete(request, id):
 
 
 def transaction_list(request, id):
-    transaction = Transactions.objects.all().order_by('id')
+    transaction = Transactions.objects.all().order_by('id').reverse()
     return render(request, 'transaction_list.html', {'transaction': transaction})
 
 def transaction_detail(request, id):
@@ -93,7 +94,36 @@ def transaction_delete(request, id):
 
 def cash_forecast(request):
     cash_forecast = Cash_Forecast.objects.all().order_by('id')
-    return render(request, 'cash_forecast.html', {'cash_forecast': cash_forecast})
+    balance = Accounts.objects.raw(""" SELECT banking_accounts.id, 
+            banking_accounts.name, 
+            banking_transactions.balance, 
+            banking_transactions.id, 
+            banking_accounts.interest_rt 
+    FROM banking_transactions 
+            JOIN banking_accounts on banking_transactions.name_id = banking_accounts.id 
+        WHERE banking_transactions.id in 
+            (SELECT distinct max(banking_transactions.id) 
+                FROM banking_transactions WHERE banking_transactions.name_id = 4) """)
+
+    # income2 = Cash_Forecast.objects.raw(""" Select sum(banking_cash_forecast."Amount") 
+    #                             from banking_cash_forecast where banking_cash_forecast."Entry_Type" = 'B' """)
+
+    income = Cash_Forecast.objects.filter(Entry_Type="I").aggregate(Sum('Amount'))
+    bill = Cash_Forecast.objects.filter(Entry_Type="B").aggregate(Sum('Amount'))
+    cash = income.get('Amount__sum') - bill.get('Amount__sum')
+    # total = balance.get('Amount') + cash
+
+#     suma = Contrato.objects.aggregate(Sum('lote__Costo'))
+# decimal_val = float(suma['lote__Costo__sum'])
+                
+    return render(request, 'cash_forecast.html', 
+                {'cash_forecast': cash_forecast, 
+                'balance' : balance,
+                'income' : income,
+                'bill' : bill,
+                'cash' : cash,
+                
+                })
 
 
 def income_create(request):
