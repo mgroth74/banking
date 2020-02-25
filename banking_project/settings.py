@@ -31,6 +31,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','mymazumaapp.herokuapp.com']
 
 
+LOGIN_REDIRECT_URL = '/' 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +46,10 @@ INSTALLED_APPS = [
     'django_extensions',
     'banking',
     'mathfilters',
-    'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
+    'accounts'
+   
+
 
 ]
 
@@ -114,6 +119,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

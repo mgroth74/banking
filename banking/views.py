@@ -4,9 +4,9 @@ from .forms import AccountForm, TransactionForm, Cash_ForecastForm
 from django.db.models import Sum
 import csv, io
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
-
+@login_required
 def account_list(request):
     account = Accounts.objects.all()
     balance = Accounts.objects.raw(""" SELECT banking_accounts.id, 
@@ -26,11 +26,12 @@ def account_list(request):
 # def account_list(request):
 #     account = Accounts.objects.all()
 #     return render(request, 'account_list.html', {'account': account})
-
+@login_required
 def account_detail(request, id):
     account = Accounts.objects.get(id = id)
     return render(request, 'account_detail.html', {'account': account})
 
+@login_required
 def account_create(request):
     if request.method == 'POST':
         form = AccountForm(request.POST)
@@ -43,7 +44,7 @@ def account_create(request):
 
 
         
-
+@login_required
 def account_update(request, id):
     account = Accounts.objects.get(id = id)
     if request.method == 'POST':
@@ -55,6 +56,7 @@ def account_update(request, id):
         form = AccountForm(instance = account)
         return render(request, 'account_form.html', {'form': form})
 
+@login_required
 def account_delete(request, id):
     Accounts.objects.get(id = id).delete()
     return redirect('account_list')
@@ -65,15 +67,17 @@ def account_delete(request, id):
 
 
 
-
+@login_required
 def transaction_list(request, id):
     transaction = Transactions.objects.all().order_by('id').reverse()
     return render(request, 'transaction_list.html', {'transaction': transaction})
 
+@login_required
 def transaction_detail(request, id):
     transaction = Transactions.objects.get(id = id)
     return render(request, 'transaction_detail.html', {'transaction': transaction})
 
+@login_required
 def transaction_create(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
@@ -84,6 +88,7 @@ def transaction_create(request):
         form = TransactionForm()
         return render(request, 'transaction_form.html', {'form': form})
 
+@login_required
 def transaction_update(request, id):
     transaction = Transactions.objects.get(id = id)
     if request.method == 'POST':
@@ -95,11 +100,12 @@ def transaction_update(request, id):
         form = TransactionForm(instance = transaction)
         return render(request, 'transaction_form.html', {'form': form})
 
+@login_required
 def transaction_delete(request, id):
     Transactions.objects.get(id = id).delete()
     return redirect('transaction_list')
 
-
+@login_required
 def cash_forecast(request):
     cash_forecast = Cash_Forecast.objects.all().order_by('Start_Dt')
     balance = Accounts.objects.raw(""" SELECT banking_accounts.id, 
@@ -133,7 +139,7 @@ def cash_forecast(request):
                 
                 })
 
-
+@login_required
 def cash_forecast_create(request):
     if request.method == 'POST':
         form = Fash_ForecastForm(request.POST)
@@ -144,8 +150,7 @@ def cash_forecast_create(request):
         form = Cash_ForecastForm()
         return render(request, 'cash_forecast_form.html', {'form': form})
 
-
-
+@login_required
 def transaction_upload(request):
     template = "transaction_upload.html"
 
@@ -176,6 +181,7 @@ def transaction_upload(request):
    
     return render(request, template)
 
+@login_required
 def cash_forecast_update(request, id):
     cash_forecast = Cash_Forecast.objects.get(id = id)
     if request.method == 'POST':
