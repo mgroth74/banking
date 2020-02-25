@@ -2,13 +2,16 @@ from django.shortcuts import render, redirect
 from .models import Accounts, Transactions, Cash_Forecast
 from .forms import AccountForm, TransactionForm, IncomeForm
 from django.db.models import Sum
+import csv, io
+from django.contrib import messages
+
 
 
 def account_list(request):
-    account = Accounts.objects.raw(""" SELECT banking_accounts.id, 
+    account = Accounts.objects.all()
+    balance = Accounts.objects.raw(""" SELECT banking_accounts.id, 
                 banking_accounts.name, 
                 banking_transactions.balance, 
-                banking_transactions.id, 
                 banking_accounts.interest_rt 
         FROM banking_transactions 
                 JOIN banking_accounts on banking_transactions.name_id = banking_accounts.id 
@@ -16,7 +19,9 @@ def account_list(request):
                 (SELECT distinct max(banking_transactions.id) 
                     FROM banking_transactions group by banking_transactions.name_id) """)
 
-    return render(request, 'account_list.html', {'account': account})
+    return render(request, 'account_list.html',
+            {'account': account,
+             'balance': balance,})
 
 # def account_list(request):
 #     account = Accounts.objects.all()
@@ -35,6 +40,9 @@ def account_create(request):
     else:
         form = AccountForm()
         return render(request, 'account_form.html', {'form': form})
+
+
+        
 
 def account_update(request, id):
     account = Accounts.objects.get(id = id)
@@ -138,3 +146,33 @@ def income_create(request):
 
 
 
+def transaction_upload(request):
+    template = "transaction_upload.html"
+
+    prompt = {
+        'order': 'Order of the CSV should be:  date, description, amount, balance, prevbalance, account'
+    }
+
+    if request.method == "GET":
+        return render(request, template, prompt)
+
+    csv_file = request.FILES['file']
+
+    # if not csv_file.name.endwith('.csv'):
+    #     message.err(request, 'Invalid file type')
+
+    data_set = csv_file.read().decode('UTF-8')
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        _, created = Transactions.objects.update_or_create(
+            date=column[0],
+            description=column[1],
+            amount=column[2],
+            balance=column[3],
+            prevbalance=column[4],
+            name_id=column[5],
+        )
+   
+    return render(request, template)
+        

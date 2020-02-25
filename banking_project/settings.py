@@ -21,14 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '=t#ca$rg3wa$*59l6bdxk7^b1k606qc!2q42=i0-524e%@0$)g'
+SECRET_KEY = '=t#ca$rg3wa$*59l6bdxk7^b1k606qc!2q42=i0-524e%@0$)g'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mymazumaapp.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','mymazumaapp.herokuapp.com']
 
 
 # Application definition
@@ -146,3 +146,4 @@ MEDIA_URL ='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'static', 'media')
 
 django_heroku.settings(locals())
+

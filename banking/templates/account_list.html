@@ -34,6 +34,7 @@
  
 
   {% for account in account %}
+   
   
     <div class="account">
       <div class="row">
@@ -50,7 +51,27 @@
           <a href="/accounts/{{account.id}}">{{account.name}}</a>
         </div>
         <div class="col-sm-2">
-          {{account.balance | currency}}
+
+          
+          {% for balance in balance %}
+             {% if balance.id == account.id %}
+              {{balance.balance | currency}}
+            {% else %}
+              
+            {% endif %}
+          {% endfor %}
+
+          <!-- {% if account.id == balance.id %}
+            yes -->
+            <!-- {{account_bal.balance | currency}} -->
+           <!-- {% else %} 
+            0
+          {% endif %}
+
+          {{account.id}} -->
+          
+         
+
         </div>
         <div class="col-sm-1">
           {{account.interest_rt}}
@@ -58,4 +79,5 @@
 
      </div>
   {% endfor %}
+
 {% endblock %}
