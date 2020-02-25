@@ -17,7 +17,7 @@ class TransactionForm(forms.ModelForm):
         
 
 
-class IncomeForm(forms.ModelForm):
+class Cash_ForecastForm(forms.ModelForm):
 
     class Meta:
         model = Cash_Forecast

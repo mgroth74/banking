@@ -14,6 +14,8 @@ urlpatterns = [
     path('transactions/<int:id>/edit', views.transaction_update, name = 'transaction_edit'),
     path('transactions/<int:id>/delete', views.transaction_delete, name = 'transaction_delete'),
     path('cash_forecast/', views.cash_forecast, name = 'cash_forecast'),
-    path('cash_forecast/income/', views.income_create, name = 'income_create'),
+    path('cash_forecast/income/', views.cash_forecast_create, name = 'income_create'),
+    path('cash_forecast/<int:id>/edit', views.cash_forecast_update, name = 'cash_forecast_update'),
+    path('cash_forecast/<int:id>/delete', views.cash_forecast_delete, name = 'cash_forecast_delete'),
     path('upload-csv/', views.transaction_upload, name='transaction_upload')
 ]

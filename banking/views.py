@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Accounts, Transactions, Cash_Forecast
-from .forms import AccountForm, TransactionForm, IncomeForm
+from .forms import AccountForm, TransactionForm, Cash_ForecastForm
 from django.db.models import Sum
 import csv, io
 from django.contrib import messages
@@ -134,15 +134,15 @@ def cash_forecast(request):
                 })
 
 
-def income_create(request):
+def cash_forecast_create(request):
     if request.method == 'POST':
-        form = IncomeForm(request.POST)
+        form = Fash_ForecastForm(request.POST)
         if form.is_valid:
             income = form.save()
             return redirect('cash_forecast')
     else:
-        form = IncomeForm()
-        return render(request, 'income_form.html', {'form': form})
+        form = Cash_ForecastForm()
+        return render(request, 'cash_forecast_form.html', {'form': form})
 
 
 
@@ -175,4 +175,20 @@ def transaction_upload(request):
         )
    
     return render(request, template)
-        
+
+def cash_forecast_update(request, id):
+    cash_forecast = Cash_Forecast.objects.get(id = id)
+    if request.method == 'POST':
+        form = Cash_ForecastForm(request.POST, instance = cash_forecast)
+        if form.is_valid:
+            seller = form.save()
+            return redirect('cash_forecast', id = cash_forecast.id)
+    else:
+        form = Cash_ForecastForm(instance = cash_forecast)
+        return render(request, 'cash_forecast_form.html', {'form': form})
+
+def cash_forecast_delete(request, id):
+    Cash_Forecast.objects.get(id = id).delete()
+    return redirect('cash_forecast')
+
+

@@ -26,6 +26,12 @@
   {% for cash_forecast in cash_forecast %}
  
   <div class="row justify-content-center">  
+    <div class="col-sm-1">  
+      <a href="/cash_forecast/{{cash_forecast.id}}/delete">Delete</a>
+      </div>
+      <div class="col-sm-1">  
+      <a href="/cash_forecast/{{cash_forecast.id}}/edit">Edit</a>
+      </div> 
     <div class="col-sm-2">
       
       {{ cash_forecast.Start_Dt | date:'m-d-Y'}}
