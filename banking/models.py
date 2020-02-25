@@ -6,7 +6,6 @@ class Accounts(models.Model):
   owner = models.CharField(default='', max_length=100)
   dt_opened = models.DateField(auto_now=False, auto_now_add=True) 
   interest_rt = models.CharField(default='0', max_length=100)
-  balance = models.IntegerField(default = '0')
   
   
   def __str__(self):
