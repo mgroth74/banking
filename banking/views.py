@@ -182,7 +182,7 @@ def cash_forecast_update(request, id):
         form = Cash_ForecastForm(request.POST, instance = cash_forecast)
         if form.is_valid:
             seller = form.save()
-            return redirect('cash_forecast', id = cash_forecast.id)
+            return redirect('cash_forecast')
     else:
         form = Cash_ForecastForm(instance = cash_forecast)
         return render(request, 'cash_forecast_form.html', {'form': form})
