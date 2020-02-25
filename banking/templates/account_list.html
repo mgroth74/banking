@@ -8,76 +8,41 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-sm-2">
-       Accounts <a href="/accounts/new"><img src="{% static 'banking/images/plus.svg' %}" alt="add account"></a> 
-    </div> 
-    
+    <div class="col-sm-4">
+      <h2>Accounts <span class="badge badge-secondary"><a href="/accounts/new"><img src="{% static 'banking/images/plus.svg' %}" alt="add account"></a></span></h2>
+  </div> 
+
   </div>
-  <div class="row">
-      <div class="col-sm-1"> 
-      </div>
-      <div class="col-sm-1"> 
-      </div>
-      <div class="col-sm-1"> 
-        ID
-       </div>
-      <div class="col-sm-4">
-        Description
-      </div>
-      <div class="col-sm-2">
-        Balance
-      </div>
-      <div class="col-sm-1">
-        Rate
-      </div>
-    </div>
- 
-
+  <table class="table">
+    <thead class="thead-dark">
+      <tr> 
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col">ID</th>
+        <th scope="col">Description</th>
+        <th scope="col">Balance</th>
+        <th scope="col">Rate</th>
+      </tr>   
+    </thead>  
+    <tbody>
   {% for account in account %}
-   
-  
-    <div class="account">
-      <div class="row">
-        <div class="col-sm-1">  
-        <a href="/accounts/{{account.id}}/delete">Delete</a>
-        </div>
-        <div class="col-sm-1">  
-        <a href="/accounts/{{account.id}}/edit">Edit</a>
-        </div> 
-        <div class="col-sm-1 justify-content-center">  
-          {{account.id}}
-        </div>
-        <div class="col-sm-4">
-          <a href="/accounts/{{account.id}}">{{account.name}}</a>
-        </div>
-        <div class="col-sm-2">
-
-          
+      <tr>
+        <td><a class="badge badge-danger" href="/accounts/{{account.id}}/delete">Delete</a></td>
+        <td><a class="badge badge-success"href="/accounts/{{account.id}}/edit">Edit</a></td>
+        <td>{{account.id}}</td>
+        <td><a href="/accounts/{{account.id}}">{{account.name}}</a></td>
+        <td>
           {% for balance in balance %}
-             {% if balance.id == account.id %}
-              {{balance.balance | currency}}
+            {% if balance.id == account.id %}
+            {{balance.balance | currency}}
             {% else %}
-              
             {% endif %}
           {% endfor %}
-
-          <!-- {% if account.id == balance.id %}
-            yes -->
-            <!-- {{account_bal.balance | currency}} -->
-           <!-- {% else %} 
-            0
-          {% endif %}
-
-          {{account.id}} -->
-          
-         
-
-        </div>
-        <div class="col-sm-1">
-          {{account.interest_rt}}
-        </div>
-
-     </div>
-  {% endfor %}
-
+        </td>
+        <td>{{account.interest_rt}}</td>
+        {% endfor %}
+      </tr>
+    </tbody>  
+  </table>
+  
 {% endblock %}

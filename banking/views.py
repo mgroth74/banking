@@ -101,7 +101,7 @@ def transaction_delete(request, id):
 
 
 def cash_forecast(request):
-    cash_forecast = Cash_Forecast.objects.all().order_by('id')
+    cash_forecast = Cash_Forecast.objects.all().order_by('Start_Dt')
     balance = Accounts.objects.raw(""" SELECT banking_accounts.id, 
             banking_accounts.name, 
             banking_transactions.balance, 

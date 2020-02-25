@@ -4,9 +4,7 @@
 
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-sm-5">
-  <h2>{% now "F Y" %} Cashflow</h2>
-  </div> 
+   <h2>{% now  "Y" %} Cashflow</h2>
 </div>
 <div class="row justify-content-center">
  
@@ -15,50 +13,52 @@
      </div>
 </div>
 
-<div class="row justify-content-center">
+<div class="row justify-content-center alert alert-secondary">
     <div>
       {% for balance in balance %}
-       {{balance.balance | currency}}
+       Beginning Balance {{balance.balance | currency}}
       {% endfor %}
      </div>  
 </div>
 
+<table class="table">
+  <thead class="thead-dark">
+    <tr> 
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col">Start</th>
+      <th scope="col">Occurrence</th>
+      <th scope="col">Name</th>
+      <th scope="col">Amount</th>
+    </tr>   
+    <tbody>
   {% for cash_forecast in cash_forecast %}
+
+        <tr> 
+            <td><a href="/cash_forecast/{{cash_forecast.id}}/delete" class="badge badge-danger">Delete</a></td>
+            <td><a href="/cash_forecast/{{cash_forecast.id}}/edit" class="badge badge-success">Edit</a></td>  
+            <td>{{ cash_forecast.Start_Dt | date:'m-d-Y'}}</td>
+            <td>{{ cash_forecast.Occurrence}}</td>
+            <td>{{cash_forecast.Name}}</td>
+            <td>{% if cash_forecast.Entry_Type == 'B' %}
+              {{cash_forecast.Amount|mul:-1}}
+          {% else %}
+              {{cash_forecast.Amount}}
+
+          {% endif %}</td>
+          {% endfor %} 
+          </tr>
+        </tbody>  
+    </thead>
+    </table>  
  
-  <div class="row justify-content-center">  
-    <div class="col-sm-1">  
-      <a href="/cash_forecast/{{cash_forecast.id}}/delete">Delete</a>
-      </div>
-      <div class="col-sm-1">  
-      <a href="/cash_forecast/{{cash_forecast.id}}/edit">Edit</a>
-      </div> 
-    <div class="col-sm-2">
-      
-      {{ cash_forecast.Start_Dt | date:'m-d-Y'}}
-    </div>
-    <div class="col-sm-2">
-      {{cash_forecast.Name}}
-    </div>
-    <div class="col-sm-2">
-      {% if cash_forecast.Entry_Type == 'B' %}
-          {{cash_forecast.Amount|mul:-1}}
-      {% else %}
-          {{cash_forecast.Amount}}
 
-      {% endif %}
-      
-    </div>
-
-  </div>  
-  {% endfor %} 
-
- <div class="row justify-content-center">  
-  <div class="col-sm-4">
-        {% for balance in balance %}
+ <div class="row justify-content-center alert alert-secondary" role="alert">  
+         {% for balance in balance %}
       Ending Balance  {{balance.balance|add:cash|currency}}
         {% endfor %}
   
- </div>  
+
 </div>
 
      

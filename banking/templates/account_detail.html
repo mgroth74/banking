@@ -3,56 +3,31 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-sm-2">
+  <div class="col-sm-5">
      {{account.name}} History
   </div> 
  
 </div>
-<div class="row">
-    <div class="col-sm-2"> 
-      Date
-     </div>
-    <div class="col-sm-4">
-      Description
-    </div>
-    <div class="col-sm-2">
-      Amount
-    </div>
-    <div class="col-sm-2">
-      Balance
-    </div>
-    <div class="col-sm-2">
-      Prev Balance
-    </div>
-  </div>
-
-
+<table class="table">
+  <thead class="thead-dark">
+    <tr> 
+      <th scope="col">Date</th>
+      <th scope="col">Description</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Prev Balance</th>
+     </tr>   
+  </thead>  
+  <tbody>
 {% for transaction in account.transactions.all %}
-  <div class="account">
-    <div class="row">
-      <div class="col-sm-2">  
-        {{transaction.date | date:'m-d-Y'}}
-
-      </div>
-      <div class="col-sm-4">
-        {{transaction.description}}
-      </div>
-      <div class="col-sm-2">
-        {{ transaction.amount | currency}}
-        
-      </div>
-      <div class="col-sm-2">
-        {{transaction.balance | currency}}
-      </div>
-      <div class="col-sm-2">
-        {{transaction.prevbalance | currency}}
-      </div>
-
-   </div>
-    
-    {% endfor %}
-    <footer>
-    
-    </footer>
-  </div>
+    <tr>
+      <td>{{transaction.date | date:'m-d-Y'}}</td>
+      <td>{{transaction.description}}</td>
+      <td>{{ transaction.amount | currency}}</td>
+      <td>{{transaction.balance | currency}}</td>
+      <td>{{transaction.prevbalance | currency}}</td>
+      {% endfor %}
+    </tr>
+  </tbody>  
+</table>  
 {% endblock %}

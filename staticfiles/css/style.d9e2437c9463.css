@@ -1,0 +1,12 @@
+
+.container-fluid{
+  padding-left: 0;
+  padding-right: 0;
+  background-color: bisque;
+}
+
+.main{
+  width: 100%;
+  background-color: cornflowerblue;
+
+}
